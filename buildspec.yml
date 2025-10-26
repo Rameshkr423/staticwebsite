@@ -1,0 +1,26 @@
+version: 0.2
+
+env:
+  parameter-store:
+    DOCKER_REGISTRY_USERNAME: /myapp/docker/username
+    DOCKER_REGISTRY_PASSWORD: /myapp/docker/password
+    DOCKER_REGISTRY_URL: /myapp/docker/url
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Docker registry...
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/static-web-app:latest" .
+  post_build:
+    commands:
+      - echo Pushing Docker image........
+      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/static-web-app:latest"
+      - echo Build and push completed.
+artifacts:
+  files:
+    - '**/*'
+  base-directory: .
