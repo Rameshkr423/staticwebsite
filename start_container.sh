@@ -18,6 +18,6 @@ docker pull $IMAGE_NAME:latest
 
 # Run the new container
 echo "Starting new container..."
-docker run -d -p 80:80 --name $CONTAINER_NAME $IMAGE_NAME:latest
+docker run -d -p 8080:80 --name $CONTAINER_NAME $IMAGE_NAME:latest
 
 echo "Static website container started successfully."
